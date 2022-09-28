@@ -50,7 +50,7 @@ class App extends React.Component {
             <a href={constants.PATH_ROOT}>
               <img
                 id="the-ethernaut"
-                src="../../imgs/the-ethernaut.svg"
+                src="../../imgs/near-logo.svg"
                 alt="The-Ethernaut"
                 className="the-ethernaut"
               />
