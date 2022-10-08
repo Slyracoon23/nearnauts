@@ -49,10 +49,10 @@ class App extends React.Component {
           <section className="titles">
             <a href={constants.PATH_ROOT}>
               <img
-                id="the-ethernaut"
+                id="near-logo"
                 src="../../imgs/near-logo.svg"
-                alt="The-Ethernaut"
-                className="the-ethernaut"
+                alt="Near Logo"
+                className="near-logo"
               />
             </a>
             <img

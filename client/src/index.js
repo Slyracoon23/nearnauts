@@ -11,6 +11,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./styles/app.css";
 import * as actions from "../src/actions";
 import * as constants from "../src/constants";
+//@notice: console logging utils
 import "./utils/^^";
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";
@@ -40,46 +41,43 @@ store.dispatch(actions.loadGamedata());
 // View entry point.
 ReactDOM.render(
   <Provider store={store}>
-      <Router history={syncHistoryWithStore(history, store)}>
-        <Route
-          path={constants.PATH_ROOT}
-          children={({ location }) => (
-            <Suspense location={location} fallback={<div>Loading...</div>}>
-              <MediaQuery minWidth={880.1}>
-                <Header></Header>
-                <Switch>
-                  <Route path={constants.PATH_HELP} component={Help} />
-                  <Route path={constants.PATH_LEVEL} component={Level} />
-                  <Route path={constants.PATH_STATS} component={Stats} />
-                  <Route exact path="/" component={App} />
-                  <Route path="/" component={NotFound404} />
-                </Switch>
-              </MediaQuery>
-              <MediaQuery maxWidth={880}>
-                <Header></Header>
-                <div className="unfitScreenSize">
-                  <h3>You need a larger screen to play</h3>
-                  <a href={constants.PATH_ROOT}>
-                    <img
-                      id="the-ethernaut"
-                      src="../../imgs/the-ethernaut.svg"
-                      alt="The-Ethernaut"
-                      className="the-ethernaut"
-                    />
-                  </a>
-                </div>
-              </MediaQuery>
-            </Suspense>
-          )}
-        />
-      </Router>
-
+    <Router history={syncHistoryWithStore(history, store)}>
+      <Route
+        path={constants.PATH_ROOT}
+        children={({ location }) => (
+          <Suspense location={location} fallback={<div>Loading...</div>}>
+            <MediaQuery minWidth={880.1}>
+              <Header></Header>
+              <Switch>
+                <Route path={constants.PATH_HELP} component={Help} />
+                <Route path={constants.PATH_LEVEL} component={Level} />
+                <Route path={constants.PATH_STATS} component={Stats} />
+                <Route exact path="/" component={App} />
+                <Route path="/" component={NotFound404} />
+              </Switch>
+            </MediaQuery>
+            <MediaQuery maxWidth={880}>
+              <Header></Header>
+              <div className="unfitScreenSize">
+                <h3>You need a larger screen to play</h3>
+              </div>
+            </MediaQuery>
+          </Suspense>
+        )}
+      />
+    </Router>
   </Provider>,
   document.getElementById("root")
 );
 
-// Post-load actions.
+/**
+ * @dev: After every page load, This will be called.
+ * It will redux action && set correct web3 details into window object
+ * It will also execute setInterval to check for network change and set them to redux Store
+ * Fairly wastful implementation but it works.
+ */
 window.addEventListener("load", async () => {
+  // debugger;
   if (window.ethereum) {
     window.web3 = new constants.Web3(window.ethereum);
     try {
@@ -95,6 +93,7 @@ window.addEventListener("load", async () => {
     ethutil.setWeb3(window.web3);
     ethutil.attachLogger();
 
+    // @notice: Bunch of Redux actions with middleware to handle
     // Initial web3 related actions
     store.dispatch(actions.connectWeb3(window.web3));
     window.web3.eth.getAccounts(function (error, accounts) {

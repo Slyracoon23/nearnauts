@@ -219,7 +219,16 @@ nav li {
 }
 
 .the-ethernaut {
-  width: 40%;
+  width: 35%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.near-logo {
+  width: 35%;
   display: block;
   margin-left: auto;
   margin-right: auto;

@@ -20,39 +20,36 @@ class Header extends React.Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
-
     var black = getComputedStyle(document.documentElement).getPropertyValue(
       "--black"
     );
 
-    var primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
-      "--primary-color"
-    );
+    var primaryColor = getComputedStyle(
+      document.documentElement
+    ).getPropertyValue("--primary-color");
 
-    if(primaryColor === black) this.toggleDarkMode()
+    if (primaryColor === black) this.toggleDarkMode();
   }
 
   componentDidUpdate(prevProps) {
-    
     if (prevProps && this.props.location !== prevProps.location) {
-
       let elements = document.getElementsByClassName("level-tile");
-      if(elements.length !== 0) {
+      if (elements.length !== 0) {
         for (let i = 0; i < elements.length; i++) {
           let element = elements[i];
-          if (element && element.style) element.style.filter = this.state.dark ? this.svgFilter() : null;
+          if (element && element.style)
+            element.style.filter = this.state.dark ? this.svgFilter() : null;
         }
       }
 
       // Change The Ethernaut logo
       var theEthernaut = document.getElementById("the-ethernaut");
-      if(theEthernaut && theEthernaut.style) theEthernaut.style.filter = this.state.dark
-        ? this.svgFilter()
-        : null;
+      if (theEthernaut && theEthernaut.style)
+        theEthernaut.style.filter = this.state.dark ? this.svgFilter() : null;
 
       // Change Arrow
       let isArrowInPage = document.getElementById("arrow");
@@ -61,11 +58,12 @@ class Header extends React.Component {
 
       // Change all custom images
       var imageElements = document.getElementsByClassName("custom-img");
-      if(imageElements.length !== 0) {
+      if (imageElements.length !== 0) {
         for (let i = 0; i < imageElements.length; i++) {
           let element = imageElements[i];
-          if(imageElements.length === 0) element = imageElements;
-          if (element && element.style) element.style.filter = this.state.dark ? this.svgFilter() : null;
+          if (imageElements.length === 0) element = imageElements;
+          if (element && element.style)
+            element.style.filter = this.state.dark ? this.svgFilter() : null;
         }
       }
     }
@@ -86,60 +84,58 @@ class Header extends React.Component {
 
   toggleDarkMode() {
     var documentElement = document.documentElement;
-    if(documentElement && documentElement.style) {
+    if (documentElement && documentElement.style) {
+      var pink = getComputedStyle(document.documentElement).getPropertyValue(
+        "--pink"
+      );
+      var black = getComputedStyle(document.documentElement).getPropertyValue(
+        "--black"
+      );
 
-    var pink = getComputedStyle(document.documentElement).getPropertyValue(
-      "--pink"
-    );
-    var black = getComputedStyle(document.documentElement).getPropertyValue(
-      "--black"
-    );
+      var newPrimary = this.state.dark ? pink : black;
+      var newSecondary = this.state.dark ? black : pink;
 
-    var newPrimary = this.state.dark ? pink : black;
-    var newSecondary = this.state.dark ? black : pink;
+      document.documentElement.style.setProperty("--primary-color", newPrimary);
+      document.documentElement.style.setProperty(
+        "--secondary-color",
+        newSecondary
+      );
 
-  
-    document.documentElement.style.setProperty("--primary-color", newPrimary);
-    document.documentElement.style.setProperty(
-      "--secondary-color",
-      newSecondary
-    );
+      // Change OpenZeppelin logo
+      var theLogo = document.getElementById("logo");
+      if (theLogo && theLogo.style)
+        theLogo.style.filter = !this.state.dark ? this.svgFilter() : null;
 
-    // Change OpenZeppelin logo
-    var theLogo = document.getElementById("logo")
-    if(theLogo && theLogo.style) theLogo.style.filter = !this.state.dark
-      ? this.svgFilter()
-      : null;
+      // Change The Ethernaut logo
+      var theEthernaut = document.getElementById("the-ethernaut");
+      if (theEthernaut && theEthernaut.style)
+        theEthernaut.style.filter = !this.state.dark ? this.svgFilter() : null;
 
-    // Change The Ethernaut logo
-    var theEthernaut = document.getElementById("the-ethernaut");
-    if(theEthernaut && theEthernaut.style) theEthernaut.style.filter = !this.state.dark
-      ? this.svgFilter()
-      : null;
+      // Change Arrow
+      let isArrowInPage = document.getElementById("arrow");
+      if (isArrowInPage && isArrowInPage.style)
+        isArrowInPage.style.filter = !this.state.dark ? this.svgFilter() : null;
 
-    // Change Arrow
-    let isArrowInPage = document.getElementById("arrow");
-    if (isArrowInPage && isArrowInPage.style)
-      isArrowInPage.style.filter = !this.state.dark ? this.svgFilter() : null;
+      // Change Mosaic and levels logo
+      let elements = document.getElementsByClassName("level-tile");
+      for (let i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        if (element && element.style)
+          element.style.filter = !this.state.dark ? this.svgFilter() : null;
+      }
 
-    // Change Mosaic and levels logo
-    let elements = document.getElementsByClassName("level-tile");
-    for (let i = 0; i < elements.length; i++) {
-      let element = elements[i];
-      if (element && element.style) element.style.filter = !this.state.dark ? this.svgFilter() : null;
+      // Change all custom images
+      elements = document.getElementsByClassName("custom-img");
+      for (let i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        if (element && element.style)
+          element.style.filter = !this.state.dark ? this.svgFilter() : null;
+      }
+
+      this.setState({
+        dark: !this.state.dark,
+      });
     }
-
-    // Change all custom images
-    elements = document.getElementsByClassName("custom-img");
-    for (let i = 0; i < elements.length; i++) {
-      let element = elements[i];
-      if (element && element.style) element.style.filter = !this.state.dark ? this.svgFilter() : null;
-    }
-
-    this.setState({
-      dark: !this.state.dark,
-    });
-  }
   }
 
   render() {
@@ -166,14 +162,6 @@ class Header extends React.Component {
                 </a>
               </li>
             </ul>
-            <a className="logo-container" href="https://openzeppelin.com">
-              <img
-                id="logo"
-                className="logo"
-                src="../../imgs/oz-logo.svg"
-                alt="logo"
-              />
-            </a>
             <ul className="header-ul">
               <li className="nav-links">
                 <Link
