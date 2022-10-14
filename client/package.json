@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@near-wallet-selector/core": "^7.1.0",
+    "@near-wallet-selector/my-near-wallet": "^7.1.0",
     "@sentry/react": "^6.8.0",
     "@truffle/contract": "^4.3.15",
     "bootstrap": "^4.6.0",
@@ -13,6 +15,7 @@
     "highlight.js": "10.7.2-local",
     "html-react-parser": "^3.0.1",
     "moment": "^2.29.2",
+    "near-api-js": "^1.1.0",
     "rainbow-color": "^2.0.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
