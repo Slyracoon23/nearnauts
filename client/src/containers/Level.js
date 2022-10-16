@@ -311,4 +311,5 @@ function mapDispatchToProps(dispatch) {
   );
 }
 
+// What does it do?
 export default connect(mapStateToProps, mapDispatchToProps)(Level);

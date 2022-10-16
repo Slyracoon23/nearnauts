@@ -5,6 +5,8 @@
   "private": true,
   "dependencies": {
     "@near-wallet-selector/core": "^7.1.0",
+    "@near-wallet-selector/ledger": "^7.1.0",
+    "@near-wallet-selector/modal-ui": "^7.1.0",
     "@near-wallet-selector/my-near-wallet": "^7.1.0",
     "@sentry/react": "^6.8.0",
     "@truffle/contract": "^4.3.15",

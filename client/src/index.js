@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom";
+import { Wallet } from "./utils/near-wallet";
 
 import MediaQuery from "react-responsive";
 import { Provider } from "react-redux";
@@ -20,6 +21,10 @@ import App from "./containers/App";
 import NotFound404 from "./components/NotFound404";
 import Header from "./containers/Header";
 
+// When creating the wallet you can choose to create an access key, so the user
+// can skip signing non-payable methods when talking wth the  contract
+const wallet = new Wallet({});
+
 // For bundle splitting without lazy loading.
 const nonlazy = (component) => lazy(() => component);
 
@@ -27,6 +32,7 @@ const Level = nonlazy(import("./containers/Level"));
 const Help = nonlazy(import("./containers/Help"));
 const Stats = nonlazy(import("./containers/Stats"));
 
+// Sentry sends error reports to the Sentry server
 Sentry.init({
   dsn: constants.SENTRY_DSN,
   debug: false,
@@ -36,6 +42,7 @@ Sentry.init({
   release: constants.VERSION,
 });
 
+// Here Levels are loaded
 store.dispatch(actions.loadGamedata());
 
 // View entry point.
@@ -77,47 +84,53 @@ ReactDOM.render(
  * Fairly wastful implementation but it works.
  */
 window.addEventListener("load", async () => {
-  // debugger;
-  if (window.ethereum) {
-    window.web3 = new constants.Web3(window.ethereum);
-    try {
-      await window.ethereum.request({ method: `eth_requestAccounts` });
-    } catch (error) {
-      console.error(error);
-      console.error(`Refresh the page to approve/reject again`);
-      window.web3 = null;
-    }
-  }
+  // Is the NEAR USER signed in?
+  let isSignedIn = await wallet.startUp();
+
+  // Attach Near CLI to console
+
+  // if (window.ethereum) {
+  //   window.web3 = new constants.Web3(window.ethereum);
+  //   try {
+  //     await window.ethereum.request({ method: `eth_requestAccounts` });
+  //   } catch (error) {
+  //     console.error(error);
+  //     console.error(`Refresh the page to approve/reject again`);
+  //     window.web3 = null;
+  //   }
+  // }
+
+  // What data should we load?
 
   if (window.web3) {
     ethutil.setWeb3(window.web3);
     ethutil.attachLogger();
-
     // @notice: Bunch of Redux actions with middleware to handle
     // Initial web3 related actions
+    debugger;
     store.dispatch(actions.connectWeb3(window.web3));
-    window.web3.eth.getAccounts(function (error, accounts) {
-      let player;
-      if (accounts.length !== 0 && !error) player = accounts[0];
-      store.dispatch(actions.setPlayerAddress(player));
-      store.dispatch(actions.loadEthernautContract());
-      ethutil.watchAccountChanges((acct) => {
-        store.dispatch(actions.setPlayerAddress(acct));
-      }, player);
-      ethutil.watchNetwork({
-        gasPrice: (price) =>
-          store.dispatch(actions.setGasPrice(Math.floor(price * 1.1))),
-        networkId: (id) => {
-          checkWrongNetwork(id);
-          if (id !== store.getState().network.networkId)
-            store.dispatch(actions.setNetworkId(id));
-        },
-        blockNum: (num) => {
-          if (num !== store.getState().network.blockNum)
-            store.dispatch(actions.setBlockNum(num));
-        },
-      });
-    });
+    // window.web3.eth.getAccounts(function (error, accounts) {
+    //   let player;
+    //   if (accounts.length !== 0 && !error) player = accounts[0];
+    //   store.dispatch(actions.setPlayerAddress(player));
+    //   store.dispatch(actions.loadEthernautContract());
+    //   ethutil.watchAccountChanges((acct) => {
+    //     store.dispatch(actions.setPlayerAddress(acct));
+    //   }, player);
+    //   ethutil.watchNetwork({
+    //     gasPrice: (price) =>
+    //       store.dispatch(actions.setGasPrice(Math.floor(price * 1.1))),
+    //     networkId: (id) => {
+    //       checkWrongNetwork(id);
+    //       if (id !== store.getState().network.networkId)
+    //         store.dispatch(actions.setNetworkId(id));
+    //     },
+    //     blockNum: (num) => {
+    //       if (num !== store.getState().network.blockNum)
+    //         store.dispatch(actions.setBlockNum(num));
+    //     },
+    //   });
+    // });
   }
 });
 

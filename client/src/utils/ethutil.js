@@ -208,6 +208,7 @@ export const logger = (req, res, next, end) => {
   });
 };
 
+// Adds a logger middleware to the provider, which logs specific RPC calls
 export const attachLogger = () => {
   if (web3.currentProvider._rpcEngine) {
     web3.currentProvider._rpcEngine._middleware.unshift(logger);

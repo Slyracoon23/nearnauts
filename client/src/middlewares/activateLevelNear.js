@@ -1,4 +1,4 @@
-import _ from "lodash"; // Lodash makes JavaScript easier by taking the hassle out of working with arrays, numbers, objects, strings, etc. Lodash’s modular methods are great for:
+import _ from "lodash";
 import { push } from "react-router-redux";
 import * as actions from "../actions";
 import * as constants from "../constants";
@@ -7,9 +7,10 @@ import { loadTranslations } from "../utils/translations";
 let language = localStorage.getItem("lang");
 let strings = loadTranslations(language);
 
-const activateLevel = (store) => (next) => (action) => {
-  if (action.type !== actions.ACTIVATE_LEVEL) return next(action);
+const activateLevelNear = (store) => (next) => (action) => {
+  if (action.type !== actions.ACTIVATE_LEVEL_NEAR) return next(action);
 
+  // Returns the current state tree of your application.
   const state = store.getState();
   if (!state.gamedata.levels) return next(action);
 
