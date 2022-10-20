@@ -13,11 +13,17 @@ export const setPlayerAddress = address => ({ type: SET_PLAYER_ADDRESS, address 
 export const LOAD_GAME_DATA = "LOAD_GAME_DATA";
 export const loadGamedata = () => ({ type: LOAD_GAME_DATA, levels: undefined })
 
+export const LOAD_GAME_DATA_NEAR = "LOAD_GAME_DATA_NEAR";
+export const loadGamedataNear = () => ({ type: LOAD_GAME_DATA_NEAR, levels: undefined })
+
 export const LOAD_ETHERNAUT_CONTRACT = "LOAD_ETHERNAUT_CONTRACT";
 export const loadEthernautContract = () => ({ type: LOAD_ETHERNAUT_CONTRACT, contract: undefined })
 
 export const ACTIVATE_LEVEL = "ACTIVATE_LEVEL";
 export const activateLevel = address => ({ type: ACTIVATE_LEVEL, address })
+
+export const ACTIVATE_LEVEL_NEAR = "ACTIVATE_LEVEL_NEAR";
+export const activateLevelNear = address => ({ type: ACTIVATE_LEVEL_NEAR, address })
 
 export const DEACTIVATE_LEVEL = "DEACTIVATE_LEVEL";
 export const deactivateLevel = level => ({ type: DEACTIVATE_LEVEL, level })
