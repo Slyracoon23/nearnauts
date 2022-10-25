@@ -15,6 +15,7 @@ import { loadTranslations } from "../utils/translations";
 import { Link } from "react-router-dom";
 import getlevelsdata from "../utils/getlevelsdata";
 import { NEAR_NOMINATION_EXP } from "near-api-js/lib/utils/format";
+import nearImage from "./nearLevel2.svg";
 
 class Level extends React.Component {
   constructor(props) {
@@ -52,59 +53,59 @@ class Level extends React.Component {
   }
 
   render() {
-    const { requestedInstance, submittedIntance } = this.state;
+    // const { requestedInstance, submittedIntance } = this.state;
 
-    const { level, levelCompleted } = this.props;
+    // const { level, levelCompleted } = this.props;
 
-    var [levelData, selectedLevel] = getlevelsdata(this.props, "levelPage");
+    // var [levelData, selectedLevel] = getlevelsdata(this.props, "levelPage");
 
-    if (!level) return null;
-    const showCode = levelCompleted || level.revealCode;
-    const showCompletedDescription =
-      constants.SHOW_ALL_COMPLETE_DESCRIPTIONS || levelCompleted;
+    // if (!level) return null;
+    // const showCode = levelCompleted || level.revealCode;
+    // const showCompletedDescription =
+    //   constants.SHOW_ALL_COMPLETE_DESCRIPTIONS || levelCompleted;
 
-    let description = null;
-    let language = localStorage.getItem("lang");
-    let strings = loadTranslations(language);
+    // let description = null;
+    // let language = localStorage.getItem("lang");
+    // let strings = loadTranslations(language);
 
-    let isDescriptionMissingTranslation = false;
+    // let isDescriptionMissingTranslation = false;
 
-    try {
-      description = require(`../gamedata/${language}/descriptions/levels/${level.description}`);
-    } catch (e) {
-      //FIX-ME: If language selected is english then "language" variable is null and not "en"
-      if (language) isDescriptionMissingTranslation = true; // Only set it if language is not null (i.e. some language different from english)
-      description = require(`../gamedata/en/descriptions/levels/${level.description}`);
-    }
-    let completedDescription = null;
+    // try {
+    //   description = require(`../gamedata/${language}/descriptions/levels/${level.description}`);
+    // } catch (e) {
+    //   //FIX-ME: If language selected is english then "language" variable is null and not "en"
+    //   if (language) isDescriptionMissingTranslation = true; // Only set it if language is not null (i.e. some language different from english)
+    //   description = require(`../gamedata/en/descriptions/levels/${level.description}`);
+    // }
+    // let completedDescription = null;
 
-    let isCompleteDescriptionMissingTranslation = false;
-    if (showCompletedDescription && level.completedDescription) {
-      try {
-        completedDescription = require(`../gamedata/${language}/descriptions/levels/${level.completedDescription}`);
-      } catch (e) {
-        isCompleteDescriptionMissingTranslation = true;
-        completedDescription = require(`../gamedata/en/descriptions/levels/${level.completedDescription}`);
-      }
-    }
+    // let isCompleteDescriptionMissingTranslation = false;
+    // if (showCompletedDescription && level.completedDescription) {
+    //   try {
+    //     completedDescription = require(`../gamedata/${language}/descriptions/levels/${level.completedDescription}`);
+    //   } catch (e) {
+    //     isCompleteDescriptionMissingTranslation = true;
+    //     completedDescription = require(`../gamedata/en/descriptions/levels/${level.completedDescription}`);
+    //   }
+    // }
 
-    let poweredBy =
-      level.poweredBy?.src && level.poweredBy?.href ? level.poweredBy : null;
+    // let poweredBy =
+    //   level.poweredBy?.src && level.poweredBy?.href ? level.poweredBy : null;
 
-    let sourcesFile = null;
-    try {
-      sourcesFile = require(`contracts/contracts/levels/${level.instanceContract}`);
-    } catch (e) {
-      console.log(e);
-    }
+    // let sourcesFile = null;
+    // try {
+    //   sourcesFile = require(`contracts/NearContracts/near-test.rs`);
+    // } catch (e) {
+    //   console.log(e);
+    // }
 
-    const nextLevelId = findNextLevelId(this.props.level, this.props.levels);
+    // const nextLevelId = findNextLevelId(this.props.level, this.props.levels);
 
     return (
       <div>
         <div className="lines"></div>
         <main>
-          {(isDescriptionMissingTranslation ||
+          {/* {(isDescriptionMissingTranslation ||
             isCompleteDescriptionMissingTranslation) && (
             <div style={{ textAlign: "center" }}>
               <p>
@@ -114,12 +115,13 @@ class Level extends React.Component {
                 </a>
               </p>
             </div>
-          )}
+          )} */}
 
-          <div className="level-selector-nav">
+          {/* Level Selector Dropdown NAV */}
+          {/* <div className="level-selector-nav">
             <div className="dropdown-menu-bar">
-              <p key={level.difficulty}>{selectedLevel.difficulty}</p>
-              <p key={level.name}>{level.name}</p>
+              <p>{selectedLevel.  }</p>
+              <p>{level.name}</p>
 
               <div className="dropdown-menu-bar-button">
                 <button className="dropdown-button">
@@ -147,19 +149,16 @@ class Level extends React.Component {
                 );
               })}
             </div>
-          </div>
+          </div> */}
 
+          {/* IMAGE */}
           <section>
-            <img
-              alt=""
-              className="level-tile level-img-view"
-              src={selectedLevel.src}
-            />
+            <img alt="" className="level-tile level-img-view" src={nearImage} />
           </section>
 
           {/* TITLE + INFO */}
-          {poweredBy && (
-            <div className="powered-by">
+          {/* {poweredBy && (
+             <div className="powered-by">
               <p>
                 {strings.poweredBy}
                 <a href={poweredBy.href}>
@@ -173,41 +172,29 @@ class Level extends React.Component {
               </p>
               <h2> </h2>
             </div>
-          )}
+          )} */}
 
           <section className="descriptors">
             <div className="boxes">
               {/* DESCRIPTION */}
-              {description && !showCompletedDescription && (
-                <MarkdownComponent target={description} />
-              )}
-
-              {/* COMPLETED DESCRIPTION */}
-              {showCompletedDescription && (
-                <div style={{ marginTop: "40px", marginBottom: "40px" }}>
-                  {completedDescription && (
-                    <div className="well">
-                      <MarkdownComponent target={completedDescription} />
-                    </div>
-                  )}
-                </div>
-              )}
+              <MarkdownComponent target={"This is my description"} />
             </div>
           </section>
 
           <section className="descriptors source-code">
             {/* CODE */}
-            {showCode && sourcesFile && (
-              <div>
-                <CodeComponent target={sourcesFile} />
-              </div>
-            )}
+            <div>
+              <CodeComponent
+                target={require(`contracts/NearContracts/near-test.rs`)}
+              />
+            </div>
           </section>
-          {/* BUTTONS */}
+
+          {/* BUTTONS
           <section className="descriptors button-sequence">
             {level.levelContract && (
               <div>
-                {/* NEXT LEVEL */}
+                NEXT LEVEL
                 {levelCompleted && nextLevelId && (
                   <button
                     type="button"
@@ -222,7 +209,7 @@ class Level extends React.Component {
                   </button>
                 )}
 
-                {/* SUBMIT */}
+                SUBMIT
                 {this.props.levelEmitted && !levelCompleted && (
                   <button
                     type="button"
@@ -243,7 +230,7 @@ class Level extends React.Component {
                   </button>
                 )}
 
-                {/* CREATE */}
+                CREATE
                 <button
                   type="button"
                   className="button-actions"
@@ -262,21 +249,21 @@ class Level extends React.Component {
                 </button>
               </div>
             )}
-          </section>
-
+          </section> */}
+          {/* 
           <section className="descriptors">
             <div className="boxes">
-              {/* AUTHOR */}
+              AUTHOR
               {level.author && <Author author={level.author} />}
             </div>
-          </section>
+          </section> */}
         </main>
 
         {/* Footer */}
-        <footer
+        {/* <footer
           className="footer"
           dangerouslySetInnerHTML={{ __html: strings.footer }}
-        ></footer>
+        ></footer> */}
       </div>
     );
   }
