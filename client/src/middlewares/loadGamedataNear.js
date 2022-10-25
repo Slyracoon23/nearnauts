@@ -11,18 +11,21 @@ const loadGameDataNear = (store) => (next) => (action) => {
   try {
     // Load levels and add a bit of post processing...
     const network = constants.ACTIVE_NETWORK;
+    // Level Data
     const data = require(`../gamedata/gamedata.json`);
+    // Level Addresses
     const deployData = require(`../gamedata/deploy.${network}.json`);
+
     const levelsIn = data.levels;
     const levelsOut = [];
     for (let i = 0; i < levelsIn.length; i++) {
       const level = levelsIn[i];
       level.deployedAddress = deployData[level.deployId];
       level.idx = i;
-      levelsOut.push(level);
+      levelsOut.push(level); // Level Data + Address + idx
     }
-    action.ethernautAddress = deployData.ethernaut;
-    action.levels = levelsOut;
+    action.ethernautAddress = deployData.ethernaut; // Factory Etneraut Address
+    action.levels = levelsOut; // List of Levels
   } catch (e) {
     window.alert(strings.noLevelsDataMessage);
   }
