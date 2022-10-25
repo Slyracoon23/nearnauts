@@ -190,80 +190,50 @@ class Level extends React.Component {
             </div>
           </section>
 
-          {/* BUTTONS
+          {/* BUTTONS */}
           <section className="descriptors button-sequence">
-            {level.levelContract && (
-              <div>
-                NEXT LEVEL
-                {levelCompleted && nextLevelId && (
-                  <button
-                    type="button"
-                    className="button-actions"
-                    onClick={(evt) =>
-                      this.props.history.push(
-                        `${constants.PATH_LEVEL_ROOT}${nextLevelId}`
-                      )
-                    }
-                  >
-                    {strings.nextLevel}
-                  </button>
-                )}
+            <div>
+              {/* SUBMIT */}
+              <button
+                type="button"
+                disabled={true}
+                className="button-actions"
+                onClick={(evt) => {
+                  console.log("submit");
+                }}
+              >
+                Submit Instance
+              </button>
 
-                SUBMIT
-                {this.props.levelEmitted && !levelCompleted && (
-                  <button
-                    type="button"
-                    disabled={this.props.levelCompleted}
-                    className="button-actions"
-                    onClick={(evt) => {
-                      if (!submittedIntance && nextLevelId) {
-                        this.props.submitLevelInstance(level);
-                        this.setState({ submittedIntance: true });
-                        setTimeout(
-                          () => this.setState({ submittedIntance: false }),
-                          2000
-                        );
-                      }
-                    }}
-                  >
-                    {strings.submitInstance}
-                  </button>
-                )}
+              {/* CREATE */}
+              <button
+                type="button"
+                className="button-actions"
+                onClick={(evt) => {
+                  console.log("create");
+                }}
+              >
+                Create Instance
+              </button>
+            </div>
+          </section>
 
-                CREATE
-                <button
-                  type="button"
-                  className="button-actions"
-                  onClick={(evt) => {
-                    if (!requestedInstance) {
-                      this.props.loadLevelInstance(level, false, true);
-                      this.setState({ requestedInstance: true });
-                      setTimeout(
-                        () => this.setState({ requestedInstance: false }),
-                        2000
-                      );
-                    }
-                  }}
-                >
-                  {strings.getNewInstance}
-                </button>
-              </div>
-            )}
-          </section> */}
-          {/* 
           <section className="descriptors">
             <div className="boxes">
-              AUTHOR
-              {level.author && <Author author={level.author} />}
+              {/* AUTHOR */}
+              <Author author={"Earl Potters"} />
             </div>
-          </section> */}
+          </section>
         </main>
 
         {/* Footer */}
-        {/* <footer
+        <footer
           className="footer"
-          dangerouslySetInnerHTML={{ __html: strings.footer }}
-        ></footer> */}
+          dangerouslySetInnerHTML={{
+            __html:
+              "developed with <span aria-hidden='true' class='fa fa-heart' style='color: red;'></span> and <span aria-hidden='true' class='fa fa-flash' style='color: yellow;'></span> by the <a href='https://openzeppelin.com'>NEARAUTS</a> team",
+          }}
+        ></footer>
       </div>
     );
   }
