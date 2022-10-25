@@ -105,11 +105,11 @@ window.addEventListener("load", async () => {
   // What data should we load?
 
   if (window.web3) {
-    ethutil.setWeb3(window.web3);
-    ethutil.attachLogger();
+    // ethutil.setWeb3(window.web3);
+    // ethutil.attachLogger();
     // @notice: Bunch of Redux actions with middleware to handle
     // Initial web3 related actions
-    store.dispatch(actions.connectWeb3(window.web3));
+    // store.dispatch(actions.connectWeb3(window.web3));
     // window.web3.eth.getAccounts(function (error, accounts) {
     //   let player;
     //   if (accounts.length !== 0 && !error) player = accounts[0];
