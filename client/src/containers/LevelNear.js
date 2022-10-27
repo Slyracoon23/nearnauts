@@ -3,6 +3,7 @@
  */
 
 import React from "react";
+import * as fs from "fs";
 import * as nearAPI from "near-api-js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,8 +29,71 @@ class Level extends React.Component {
   }
 
   // execute React code when the component is already placed in the DOM
-  componentDidMount() {
-    initNear();
+  async componentDidMount() {
+    //////////////////////////////////////////////////////
+    // initNEAR
+    // Initializing connection to the NEAR node.
+    const nearConnection = await nearAPI.connect({
+      deps: {
+        keyStore: new nearAPI.keyStores.BrowserLocalStorageKeyStore(),
+      },
+      networkId: "testnet",
+      nodeUrl: "https://rpc.testnet.near.org",
+      walletUrl: "https://wallet.testnet.near.org",
+    });
+    console.log("NearConnection:", nearConnection);
+
+    // Needed to access wallet
+    const walletConnection = new nearAPI.WalletConnection(nearConnection);
+
+    console.log("WalletConnection:", walletConnection);
+
+    // Sign in if not signed in
+    if (!walletConnection.isSignedIn()) {
+      signIn(walletConnection);
+    }
+    // Load in account data
+    let currentUser;
+    if (walletConnection.getAccountId()) {
+      currentUser = {
+        accountId: walletConnection.getAccountId(),
+        balance: (await walletConnection.account().state()).amount,
+      };
+    }
+    console.log("CurrentUser: ", currentUser);
+    this.setState({
+      nearConnection: nearConnection,
+      walletConnection: walletConnection,
+      currentUser: currentUser,
+    });
+
+    ////////////////////////////////////////////////////////
+    // initContract
+
+    const account = walletConnection.account();
+    const accountId = walletConnection.getAccountId();
+    const methodOptions = {
+      // name of contract you're connecting to
+      viewMethods: ["getMessages"], // view methods do not change state but usually return a value
+      changeMethods: ["addMessage"], // change methods modify state
+      sender: accountId, // account ID to initialize transactions
+    };
+
+    const contract = new nearAPI.Contract(
+      account,
+      "example-contract.testnet",
+      methodOptions
+    );
+    console.log("Contract: ", contract);
+    this.setState({ contract: contract });
+
+    ///////////////////////////////////
+    // addMessages
+    // await contract.addMessage({
+    //   text: "Hello World",
+    // });
+    // getMessages
+    // const messages = await contract.getMessages();
   }
 
   // execute React code when the component is removed from the DOM
@@ -209,8 +273,13 @@ class Level extends React.Component {
               <button
                 type="button"
                 className="button-actions"
-                onClick={(evt) => {
+                onClick={async (evt) => {
+                  // https://docs.near.org/tools/near-api-js/quick-reference#call-contract
                   console.log("create");
+                  debugger;
+                  await this.state.contract.addMessage({
+                    text: "Hello World",
+                  });
                 }}
               >
                 Create Instance
@@ -271,7 +340,14 @@ async function initNear() {
     };
   }
   console.log("CurrentUser: ", currentUser);
+  this.setState({
+    nearConnection: nearConnection,
+    walletConnection: walletConnection,
+    currentUser: currentUser,
+  });
 }
+
+async function initContract() {}
 
 async function signIn(walletConnection) {
   walletConnection.requestSignIn("contract-example.testnet", "Nearnauts");
