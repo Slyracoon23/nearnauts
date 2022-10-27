@@ -70,6 +70,9 @@ export const ACTIVE_NETWORK = NETWORKS.RINKEBY;
 
 ///////////////////////////////////// NEAR /////////////////////////////////////////////////
 
+export const CONTRACT_NAME =
+  "dev2" || process.env.CONTRACT_NAME || "rust-linkdrop-app";
+
 export const NETWORKS_NEAR = {
   UNDEFINED: undefined,
   LOCAL: {
@@ -81,13 +84,13 @@ export const NETWORKS_NEAR = {
   TESTNET: {
     networkId: "testnet",
     nodeUrl: "https://rpc.testnet.near.org",
-    contractName: TODO,
+    contractName: CONTRACT_NAME,
     walletUrl: "https://wallet.testnet.near.org",
   },
   MAINNET: {
     networkId: "mainnet",
     nodeUrl: "https://rpc.near.org",
-    contractName: TODO,
+    contractName: CONTRACT_NAME,
     walletUrl: "https://wallet.near.org",
   },
 };
