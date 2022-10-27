@@ -29,6 +29,7 @@ const wallet = new Wallet({});
 const nonlazy = (component) => lazy(() => component);
 
 const Level = nonlazy(import("./containers/Level"));
+const LevelNear = nonlazy(import("./containers/LevelNear"));
 const Help = nonlazy(import("./containers/Help"));
 const Stats = nonlazy(import("./containers/Stats"));
 
@@ -58,6 +59,7 @@ ReactDOM.render(
               <Switch>
                 <Route path={constants.PATH_HELP} component={Help} />
                 <Route path={constants.PATH_LEVEL} component={Level} />
+                <Route exact path="/near" component={LevelNear} />
                 <Route path={constants.PATH_STATS} component={Stats} />
                 <Route exact path="/" component={App} />
                 <Route path="/" component={NotFound404} />
@@ -103,12 +105,11 @@ window.addEventListener("load", async () => {
   // What data should we load?
 
   if (window.web3) {
-    ethutil.setWeb3(window.web3);
-    ethutil.attachLogger();
+    // ethutil.setWeb3(window.web3);
+    // ethutil.attachLogger();
     // @notice: Bunch of Redux actions with middleware to handle
     // Initial web3 related actions
-    debugger;
-    store.dispatch(actions.connectWeb3(window.web3));
+    // store.dispatch(actions.connectWeb3(window.web3));
     // window.web3.eth.getAccounts(function (error, accounts) {
     //   let player;
     //   if (accounts.length !== 0 && !error) player = accounts[0];
